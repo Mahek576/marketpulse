@@ -1,14 +1,25 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from sqlalchemy import text
 
 from app.config import settings
 from app.db.database import engine
+from app.db.init_db import init_db
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    init_db()
+    yield
+
 
 app = FastAPI(
     title=settings.app_name,
     description="Production-grade market intelligence platform backend",
     version=settings.app_version,
     debug=settings.debug,
+    lifespan=lifespan,
 )
 
 
