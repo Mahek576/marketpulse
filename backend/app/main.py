@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import text
 
+from app.api.routes_auth import router as auth_router
 from app.config import settings
 from app.db.database import engine
 from app.db.init_db import init_db
@@ -21,6 +22,8 @@ app = FastAPI(
     debug=settings.debug,
     lifespan=lifespan,
 )
+
+app.include_router(auth_router)
 
 
 @app.get("/")
