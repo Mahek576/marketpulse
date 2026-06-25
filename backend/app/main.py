@@ -14,6 +14,7 @@ from app.api.routes_signals import router as signals_router
 from app.api.routes_health import router as health_router
 from app.api.routes_watchlist import router as watchlist_router
 from app.api.routes_alerts import router as alerts_router
+from app.api.routes_feed import router as feed_router
 from app.config import settings
 
 
@@ -51,6 +52,10 @@ openapi_tags = [
     "name": "Alerts",
     "description": "User-facing alerts generated from market signals.",
 },
+{
+    "name": "Feed",
+    "description": "Personalized intelligence feed for the logged-in user.",
+},
 ]
 
 
@@ -76,3 +81,4 @@ app.include_router(signals_router)
 app.include_router(watchlist_router)
 app.include_router(alerts_router)
 app.include_router(articles_router)
+app.include_router(feed_router)
