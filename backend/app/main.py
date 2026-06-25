@@ -13,6 +13,7 @@ from app.api.routes_companies import router as companies_router
 from app.api.routes_signals import router as signals_router
 from app.api.routes_health import router as health_router
 from app.api.routes_watchlist import router as watchlist_router
+from app.api.routes_alerts import router as alerts_router
 from app.config import settings
 
 
@@ -46,6 +47,10 @@ openapi_tags = [
     "name": "Signals",
     "description": "Generated market risk, opportunity, and monitoring signals.",
 },
+{
+    "name": "Alerts",
+    "description": "User-facing alerts generated from market signals.",
+},
 ]
 
 
@@ -69,4 +74,5 @@ app.include_router(auth_router)
 app.include_router(companies_router)
 app.include_router(signals_router)
 app.include_router(watchlist_router)
+app.include_router(alerts_router)
 app.include_router(articles_router)
