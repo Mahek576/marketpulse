@@ -7,6 +7,7 @@ from app.api.exception_handlers import (
     http_exception_handler,
     validation_exception_handler,
 )
+from app.api.routes_articles import router as articles_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_companies import router as companies_router
 from app.api.routes_health import router as health_router
@@ -36,6 +37,10 @@ openapi_tags = [
         "name": "Watchlist",
         "description": "User-specific company watchlist endpoints.",
     },
+    {
+    "name": "Articles",
+    "description": "Market news and article storage endpoints.",
+},
 ]
 
 
@@ -58,3 +63,4 @@ app.include_router(health_router)
 app.include_router(auth_router)
 app.include_router(companies_router)
 app.include_router(watchlist_router)
+app.include_router(articles_router)
