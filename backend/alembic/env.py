@@ -1,6 +1,6 @@
 from app.config import settings
 from app.db.database import Base
-from app.models import Alert, Article, Company, MarketSignal, User, Watchlist
+from app.models import Alert, Article, Company, IngestionJob, MarketSignal, User, Watchlist
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config

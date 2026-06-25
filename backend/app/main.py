@@ -16,6 +16,7 @@ from app.api.routes_watchlist import router as watchlist_router
 from app.api.routes_alerts import router as alerts_router
 from app.api.routes_feed import router as feed_router
 from app.api.routes_ingestion import router as ingestion_router
+from app.api.routes_jobs import router as jobs_router
 from app.config import settings
 
 
@@ -61,6 +62,10 @@ openapi_tags = [
     "name": "Ingestion",
     "description": "External data ingestion endpoints for real market news sources.",
 },
+{
+    "name": "Jobs",
+    "description": "Background job tracking endpoints.",
+},
 ]
 
 
@@ -88,3 +93,4 @@ app.include_router(alerts_router)
 app.include_router(articles_router)
 app.include_router(feed_router)
 app.include_router(ingestion_router)
+app.include_router(jobs_router)
