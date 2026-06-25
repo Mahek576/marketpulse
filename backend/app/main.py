@@ -15,6 +15,7 @@ from app.api.routes_health import router as health_router
 from app.api.routes_watchlist import router as watchlist_router
 from app.api.routes_alerts import router as alerts_router
 from app.api.routes_feed import router as feed_router
+from app.api.routes_ingestion import router as ingestion_router
 from app.config import settings
 
 
@@ -56,6 +57,10 @@ openapi_tags = [
     "name": "Feed",
     "description": "Personalized intelligence feed for the logged-in user.",
 },
+{
+    "name": "Ingestion",
+    "description": "External data ingestion endpoints for real market news sources.",
+},
 ]
 
 
@@ -82,3 +87,4 @@ app.include_router(watchlist_router)
 app.include_router(alerts_router)
 app.include_router(articles_router)
 app.include_router(feed_router)
+app.include_router(ingestion_router)

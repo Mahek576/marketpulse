@@ -13,9 +13,14 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
 
+    news_api_key: str | None = None
+    news_api_base_url: str = "https://newsapi.org/v2/everything"
+    news_api_default_language: str = "en"
+    news_api_default_sort_by: str = "publishedAt"
+
     model_config = SettingsConfigDict(
         env_file=".env",
-        env_file_encoding="utf-8"
+        env_file_encoding="utf-8",
     )
 
 
