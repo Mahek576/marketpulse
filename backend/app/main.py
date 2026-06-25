@@ -12,14 +12,12 @@ from app.api.routes_companies import router as companies_router
 from app.api.routes_health import router as health_router
 from app.api.routes_watchlist import router as watchlist_router
 from app.config import settings
-from app.db.init_db import init_db
+
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
     yield
-
 
 openapi_tags = [
     {
