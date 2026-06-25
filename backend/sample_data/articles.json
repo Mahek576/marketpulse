@@ -1,0 +1,50 @@
+[
+  {
+    "company_symbol": "PAYTM",
+    "title": "Paytm faces renewed regulatory attention in digital payments",
+    "url": "https://example.com/paytm-regulatory-attention",
+    "source": "Example News",
+    "author": "MarketPulse Demo",
+    "published_at": "2026-06-25T10:00:00",
+    "summary": "Paytm is facing renewed attention around compliance and digital payment operations.",
+    "content": "This sample article represents a regulatory update related to Paytm and digital payments.",
+    "sentiment_label": "negative",
+    "importance_score": 80
+  },
+  {
+    "company_symbol": "RELIANCE",
+    "title": "Reliance expands investment in clean energy business",
+    "url": "https://example.com/reliance-clean-energy-investment",
+    "source": "Example Business",
+    "author": "MarketPulse Demo",
+    "published_at": "2026-06-25T11:00:00",
+    "summary": "Reliance announced further investments in clean energy and renewable infrastructure.",
+    "content": "This sample article represents a strategic expansion update for Reliance Industries.",
+    "sentiment_label": "positive",
+    "importance_score": 70
+  },
+  {
+    "company_symbol": "TCS",
+    "title": "TCS wins large AI transformation contract",
+    "url": "https://example.com/tcs-ai-contract",
+    "source": "Example Tech News",
+    "author": "MarketPulse Demo",
+    "published_at": "2026-06-25T12:00:00",
+    "summary": "TCS secured a large AI transformation deal with an enterprise client.",
+    "content": "This sample article represents a positive business development for TCS.",
+    "sentiment_label": "positive",
+    "importance_score": 75
+  },
+  {
+    "company_symbol": "ZOMATO",
+    "title": "Zomato platform fee changes draw consumer discussion",
+    "url": "https://example.com/zomato-platform-fee-change",
+    "source": "Example Markets",
+    "author": "MarketPulse Demo",
+    "published_at": "2026-06-25T13:00:00",
+    "summary": "Zomato's platform fee changes have triggered discussion around profitability and user retention.",
+    "content": "This sample article represents a business model update related to Zomato.",
+    "sentiment_label": "neutral",
+    "importance_score": 65
+  }
+]
