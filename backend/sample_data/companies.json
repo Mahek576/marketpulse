@@ -1,0 +1,42 @@
+[
+  {
+    "symbol": "PAYTM",
+    "name": "One97 Communications",
+    "exchange": "NSE",
+    "sector": "Fintech",
+    "industry": "Digital Payments",
+    "country": "India"
+  },
+  {
+    "symbol": "RELIANCE",
+    "name": "Reliance Industries",
+    "exchange": "NSE",
+    "sector": "Energy",
+    "industry": "Oil, Gas and Retail",
+    "country": "India"
+  },
+  {
+    "symbol": "TCS",
+    "name": "Tata Consultancy Services",
+    "exchange": "NSE",
+    "sector": "Information Technology",
+    "industry": "IT Services",
+    "country": "India"
+  },
+  {
+    "symbol": "INFY",
+    "name": "Infosys",
+    "exchange": "NSE",
+    "sector": "Information Technology",
+    "industry": "IT Services",
+    "country": "India"
+  },
+  {
+    "symbol": "ZOMATO",
+    "name": "Zomato",
+    "exchange": "NSE",
+    "sector": "Consumer Internet",
+    "industry": "Food Delivery",
+    "country": "India"
+  }
+]
