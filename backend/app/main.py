@@ -5,6 +5,7 @@ from sqlalchemy import text
 
 from app.api.routes_auth import router as auth_router
 from app.api.routes_companies import router as companies_router
+from app.api.routes_watchlist import router as watchlist_router
 from app.config import settings
 from app.db.database import engine
 from app.db.init_db import init_db
@@ -25,6 +26,7 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(companies_router)
+app.include_router(watchlist_router)
 
 
 @app.get("/")
