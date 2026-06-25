@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     news_api_default_language: str = "en"
     news_api_default_sort_by: str = "publishedAt"
 
+    enable_cache: bool = True
+    redis_url: str = "redis://localhost:6379/0"
+    cache_ttl_seconds: int = 300
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

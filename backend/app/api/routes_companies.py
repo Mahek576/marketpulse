@@ -5,6 +5,12 @@ from app.api.dependencies import get_current_user
 from app.db.database import get_db
 from app.models.user import User
 from app.schemas.company_schema import CompanyCreate, CompanyResponse
+from app.services.cache_service import (
+    build_companies_cache_key,
+    clear_companies_cache,
+    get_cached_value,
+    set_cached_value,
+)
 from app.services.company_service import (
     create_company,
     get_companies,
@@ -39,6 +45,8 @@ def add_company(
 
     company = create_company(db, company_data)
 
+    clear_companies_cache()
+
     return company
 
 
@@ -52,9 +60,26 @@ def list_companies(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
+    cache_key = build_companies_cache_key(skip=skip, limit=limit)
+
+    cached_companies = get_cached_value(cache_key)
+
+    if cached_companies is not None:
+        return cached_companies
+
     companies = get_companies(db, skip=skip, limit=limit)
 
-    return companies
+    serialized_companies = [
+        CompanyResponse.model_validate(company).model_dump(mode="json")
+        for company in companies
+    ]
+
+    set_cached_value(
+        key=cache_key,
+        value=serialized_companies,
+    )
+
+    return serialized_companies
 
 
 @router.get(
