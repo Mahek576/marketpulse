@@ -10,6 +10,7 @@ from app.api.exception_handlers import (
 from app.api.routes_articles import router as articles_router
 from app.api.routes_auth import router as auth_router
 from app.api.routes_companies import router as companies_router
+from app.api.routes_signals import router as signals_router
 from app.api.routes_health import router as health_router
 from app.api.routes_watchlist import router as watchlist_router
 from app.config import settings
@@ -41,6 +42,10 @@ openapi_tags = [
     "name": "Articles",
     "description": "Market news and article storage endpoints.",
 },
+{
+    "name": "Signals",
+    "description": "Generated market risk, opportunity, and monitoring signals.",
+},
 ]
 
 
@@ -62,5 +67,6 @@ app.add_exception_handler(RequestValidationError, validation_exception_handler)
 app.include_router(health_router)
 app.include_router(auth_router)
 app.include_router(companies_router)
+app.include_router(signals_router)
 app.include_router(watchlist_router)
 app.include_router(articles_router)
