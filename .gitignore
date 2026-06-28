@@ -21,3 +21,11 @@ Thumbs.db
 # Local database files
 *.db
 backend/*.db
+
+__pycache__/
+*.pyc
+venv/
+.env
+marketpulse.db
+test_marketpulse.db
+backend/test_marketpulse.db
