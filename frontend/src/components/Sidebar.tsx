@@ -25,14 +25,19 @@ const navItems = [
     icon: Star,
   },
   {
-  label: "News Intelligence",
-  href: "/news",
-  icon: Newspaper,
+    label: "News Intelligence",
+    href: "/news",
+    icon: Newspaper,
   },
   {
-  label: "Alerts",
-  href: "/alerts",
-  icon: Bell,
+    label: "Signals",
+    href: "/signals",
+    icon: Sparkles,
+  },
+  {
+    label: "Alerts",
+    href: "/alerts",
+    icon: Bell,
   },
   {
     label: "Companies",
@@ -65,7 +70,11 @@ export default function Sidebar() {
       <nav className="space-y-2 text-sm">
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href;
+
+          const isActive =
+            item.label === "Dashboard"
+              ? pathname === "/"
+              : pathname === item.href;
 
           return (
             <Link

@@ -103,6 +103,20 @@ export type PersonalizedFeed = {
   latest_alerts_count: number;
   watchlist_companies: Company[];
   latest_articles: ArticleItem[];
-  latest_signals: unknown[];
+  latest_signals: MarketSignalItem[];
   latest_alerts: AlertItem[];
+};
+export type MarketSignalItem = {
+  id: number;
+  company_id: number | null;
+  article_id: number | null;
+  signal_type: string;
+  severity: string;
+  score: number;
+  title: string;
+  description: string | null;
+  reason: string;
+  why_it_matters: string;
+  is_active: boolean;
+  created_at: string;
 };
