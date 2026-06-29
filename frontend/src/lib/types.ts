@@ -78,3 +78,31 @@ export type AlertItem = {
   is_read: boolean;
   created_at: string;
 };
+export type ArticleItem = {
+  id: number;
+  company_id: number | null;
+  title: string;
+  url: string;
+  source: string;
+  author: string | null;
+  published_at: string | null;
+  summary: string | null;
+  content: string | null;
+  sentiment_label: string | null;
+  importance_score: number;
+  is_processed: boolean;
+  created_at: string;
+};
+
+export type PersonalizedFeed = {
+  user_id: number;
+  watchlist_count: number;
+  unread_alert_count: number;
+  latest_articles_count: number;
+  latest_signals_count: number;
+  latest_alerts_count: number;
+  watchlist_companies: Company[];
+  latest_articles: ArticleItem[];
+  latest_signals: unknown[];
+  latest_alerts: AlertItem[];
+};

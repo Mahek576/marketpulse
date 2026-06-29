@@ -25,9 +25,9 @@ const navItems = [
     icon: Star,
   },
   {
-    label: "News Intelligence",
-    href: "/",
-    icon: Newspaper,
+  label: "News Intelligence",
+  href: "/news",
+  icon: Newspaper,
   },
   {
   label: "Alerts",
