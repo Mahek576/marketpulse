@@ -43,3 +43,22 @@ def get_dashboard_watchlist():
             "impact": "High",
         },
     ]
+@router.get("/feed")
+def get_dashboard_feed():
+    return [
+        {
+            "title": "Reliance gains attention after energy expansion update",
+            "source": "MarketPulse Intelligence",
+            "tag": "Positive",
+        },
+        {
+            "title": "IT sector sentiment weakens amid global demand concerns",
+            "source": "AI News Monitor",
+            "tag": "Caution",
+        },
+        {
+            "title": "Banking stocks remain active as rate outlook stabilizes",
+            "source": "Financial Signals",
+            "tag": "Neutral",
+        },
+    ]

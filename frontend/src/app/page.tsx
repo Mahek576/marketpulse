@@ -1,10 +1,9 @@
+import DashboardIntelligenceFeed from "@/components/DashboardIntelligenceFeed";
 import DashboardMetrics from "@/components/DashboardMetrics";
 import DashboardWatchlist from "@/components/DashboardWatchlist";
-import IntelligenceFeed from "@/components/IntelligenceFeed";
 import RiskRadar from "@/components/RiskRadar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
-import { news } from "@/lib/mockData";
 
 export default function Home() {
   return (
@@ -24,7 +23,7 @@ export default function Home() {
             <RiskRadar />
           </section>
 
-          <IntelligenceFeed news={news} />
+          <DashboardIntelligenceFeed />
         </section>
       </div>
     </main>
