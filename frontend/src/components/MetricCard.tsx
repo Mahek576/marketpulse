@@ -1,10 +1,6 @@
-type MetricCardProps = {
-  title: string;
-  value: string;
-  change: string;
-};
+import type { MetricCardData } from "@/lib/types";
 
-export default function MetricCard({ title, value, change }: MetricCardProps) {
+export default function MetricCard({ title, value, change }: MetricCardData) {
   return (
     <div className="group rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.07] to-white/[0.025] p-5 shadow-2xl shadow-black/20 transition hover:-translate-y-0.5 hover:border-cyan-400/30 hover:bg-white/[0.06]">
       <div className="flex items-center justify-between">

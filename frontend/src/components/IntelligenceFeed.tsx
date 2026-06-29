@@ -1,8 +1,4 @@
-type NewsItem = {
-  title: string;
-  source: string;
-  tag: string;
-};
+import type { NewsItem } from "@/lib/types";
 
 type IntelligenceFeedProps = {
   news: NewsItem[];

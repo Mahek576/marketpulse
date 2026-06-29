@@ -4,74 +4,7 @@ import RiskRadar from "@/components/RiskRadar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import WatchlistTable from "@/components/WatchlistTable";
-
-const marketCards = [
-  {
-    title: "Tracked Companies",
-    value: "24",
-    change: "+6 this week",
-  },
-  {
-    title: "Market Alerts",
-    value: "12",
-    change: "4 high priority",
-  },
-  {
-    title: "News Signals",
-    value: "186",
-    change: "Last 24 hours",
-  },
-  {
-    title: "Avg Sentiment",
-    value: "Bullish",
-    change: "+18% momentum",
-  },
-];
-
-const watchlist = [
-  {
-    symbol: "RELIANCE",
-    name: "Reliance Industries",
-    sentiment: "Bullish",
-    impact: "High",
-  },
-  {
-    symbol: "TCS",
-    name: "Tata Consultancy Services",
-    sentiment: "Neutral",
-    impact: "Medium",
-  },
-  {
-    symbol: "INFY",
-    name: "Infosys",
-    sentiment: "Bearish",
-    impact: "Medium",
-  },
-  {
-    symbol: "HDFCBANK",
-    name: "HDFC Bank",
-    sentiment: "Bullish",
-    impact: "High",
-  },
-];
-
-const news = [
-  {
-    title: "Reliance gains attention after energy expansion update",
-    source: "MarketPulse Intelligence",
-    tag: "Positive",
-  },
-  {
-    title: "IT sector sentiment weakens amid global demand concerns",
-    source: "AI News Monitor",
-    tag: "Caution",
-  },
-  {
-    title: "Banking stocks remain active as rate outlook stabilizes",
-    source: "Financial Signals",
-    tag: "Neutral",
-  },
-];
+import { marketCards, news, watchlist } from "@/lib/mockData";
 
 export default function Home() {
   return (

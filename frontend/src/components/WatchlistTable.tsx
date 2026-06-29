@@ -1,15 +1,10 @@
-type WatchlistItem = {
-  symbol: string;
-  name: string;
-  sentiment: string;
-  impact: string;
-};
+import type { WatchlistItem } from "@/lib/types";
 
 type WatchlistTableProps = {
   watchlist: WatchlistItem[];
 };
 
-function getSentimentColor(sentiment: string) {
+function getSentimentColor(sentiment: WatchlistItem["sentiment"]) {
   if (sentiment === "Bullish") {
     return "text-emerald-300";
   }
