@@ -3,9 +3,15 @@ import type { ArticleItem } from "@/lib/types";
 
 type NewsListProps = {
   articles: ArticleItem[];
+  onCreateSignal?: (articleId: number) => void;
+  creatingSignalArticleId?: number | null;
 };
 
-export default function NewsList({ articles }: NewsListProps) {
+export default function NewsList({
+  articles,
+  onCreateSignal,
+  creatingSignalArticleId,
+}: NewsListProps) {
   if (articles.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-white/10 bg-white/[0.03] p-8 text-sm leading-6 text-slate-400">
@@ -18,7 +24,12 @@ export default function NewsList({ articles }: NewsListProps) {
   return (
     <div className="grid gap-4 xl:grid-cols-2">
       {articles.map((article) => (
-        <NewsCard key={article.id} article={article} />
+        <NewsCard
+          key={article.id}
+          article={article}
+          onCreateSignal={onCreateSignal}
+          creatingSignalArticleId={creatingSignalArticleId}
+        />
       ))}
     </div>
   );

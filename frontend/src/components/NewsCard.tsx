@@ -2,6 +2,8 @@ import type { ArticleItem } from "@/lib/types";
 
 type NewsCardProps = {
   article: ArticleItem;
+  onCreateSignal?: (articleId: number) => void;
+  creatingSignalArticleId?: number | null;
 };
 
 function getSentimentStyle(sentiment: string | null) {
@@ -24,7 +26,11 @@ function getSentimentStyle(sentiment: string | null) {
   return "border-cyan-400/20 bg-cyan-400/10 text-cyan-300";
 }
 
-export default function NewsCard({ article }: NewsCardProps) {
+export default function NewsCard({
+  article,
+  onCreateSignal,
+  creatingSignalArticleId,
+}: NewsCardProps) {
   return (
     <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-cyan-400/20 hover:bg-white/[0.05]">
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -66,14 +72,29 @@ export default function NewsCard({ article }: NewsCardProps) {
           {article.author ? ` · ${article.author}` : ""}
         </div>
 
-        <a
-          href={article.url}
-          target="_blank"
-          rel="noreferrer"
-          className="w-fit rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-medium text-cyan-300 transition hover:bg-cyan-400/15"
-        >
-          Open source
-        </a>
+        <div className="flex flex-col gap-2 sm:flex-row">
+          {onCreateSignal ? (
+            <button
+              suppressHydrationWarning
+              onClick={() => onCreateSignal(article.id)}
+              disabled={creatingSignalArticleId === article.id}
+              className="w-fit rounded-xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-medium text-emerald-300 transition hover:bg-emerald-400/15 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {creatingSignalArticleId === article.id
+                ? "Creating signal..."
+                : "Create Signal"}
+            </button>
+          ) : null}
+
+          <a
+            href={article.url}
+            target="_blank"
+            rel="noreferrer"
+            className="w-fit rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-medium text-cyan-300 transition hover:bg-cyan-400/15"
+          >
+            Open source
+          </a>
+        </div>
       </div>
     </article>
   );

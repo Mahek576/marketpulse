@@ -8,12 +8,18 @@ import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import { apiRequest } from "@/lib/apiClient";
 import { getAuthToken } from "@/lib/auth";
-import type { ArticleItem, PersonalizedFeed } from "@/lib/types";
+import type { ArticleItem, MarketSignalItem, PersonalizedFeed } from "@/lib/types";
 
 export default function NewsPage() {
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "info">(
+    "info"
+  );
+  const [creatingSignalArticleId, setCreatingSignalArticleId] = useState<
+    number | null
+  >(null);
 
   const processedCount = useMemo(
     () => articles.filter((article) => article.is_processed).length,
@@ -51,6 +57,7 @@ export default function NewsPage() {
         setArticles(feed.latest_articles);
       } catch {
         setMessage("Unable to load news intelligence right now.");
+        setMessageType("error");
       } finally {
         setIsLoading(false);
       }
@@ -58,6 +65,51 @@ export default function NewsPage() {
 
     loadNews();
   }, []);
+
+  async function handleCreateSignal(articleId: number) {
+    const token = getAuthToken();
+
+    if (!token) {
+      setMessage("Please log in again to create signals.");
+      setMessageType("error");
+      return;
+    }
+
+    setCreatingSignalArticleId(articleId);
+    setMessage("");
+
+    try {
+      const signal = await apiRequest<MarketSignalItem>(
+        `/signals/from-article/${articleId}`,
+        {
+          method: "POST",
+          token,
+        }
+      );
+
+      setMessage(`Signal created successfully. Signal ID: ${signal.id}`);
+      setMessageType("success");
+    } catch {
+      setMessage(
+        "Could not create signal. A signal may already exist for this article."
+      );
+      setMessageType("error");
+    } finally {
+      setCreatingSignalArticleId(null);
+    }
+  }
+
+  function getMessageClass() {
+    if (messageType === "success") {
+      return "border-emerald-400/20 bg-emerald-400/10 text-emerald-200";
+    }
+
+    if (messageType === "error") {
+      return "border-rose-400/20 bg-rose-400/10 text-rose-200";
+    }
+
+    return "border-cyan-400/20 bg-cyan-400/10 text-cyan-200";
+  }
 
   return (
     <AuthGuard>
@@ -95,6 +147,13 @@ export default function NewsPage() {
                 </Link>
 
                 <Link
+                  href="/signals"
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+                >
+                  View Signals
+                </Link>
+
+                <Link
                   href="/"
                   className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
                 >
@@ -113,9 +172,7 @@ export default function NewsPage() {
 
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
                 <div className="text-sm text-slate-400">Processed</div>
-                <div className="mt-3 text-3xl font-bold">
-                  {processedCount}
-                </div>
+                <div className="mt-3 text-3xl font-bold">{processedCount}</div>
               </div>
 
               <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
@@ -127,7 +184,9 @@ export default function NewsPage() {
             </section>
 
             {message ? (
-              <div className="mb-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+              <div
+                className={`mb-5 rounded-2xl border px-4 py-3 text-sm ${getMessageClass()}`}
+              >
                 {message}
               </div>
             ) : null}
@@ -137,7 +196,11 @@ export default function NewsPage() {
                 Loading news intelligence...
               </div>
             ) : (
-              <NewsList articles={articles} />
+              <NewsList
+                articles={articles}
+                onCreateSignal={handleCreateSignal}
+                creatingSignalArticleId={creatingSignalArticleId}
+              />
             )}
           </section>
         </div>
