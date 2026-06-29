@@ -132,3 +132,36 @@ export type ArticleCreateRequest = {
   sentiment_label?: string | null;
   importance_score: number;
 };
+export type NewsArticlePreview = {
+  title: string;
+  url: string;
+  source: string;
+  published_at: string | null;
+};
+
+export type NewsIngestionResponse = {
+  company_id: number;
+  company_symbol: string;
+  query: string;
+  dry_run: boolean;
+  fetched: number;
+  created: number;
+  skipped: number;
+  articles: NewsArticlePreview[];
+};
+
+export type IngestionJob = {
+  id: number;
+  user_id: number;
+  job_type: string;
+  status: string;
+  source: string | null;
+  total_records: number;
+  created_count: number;
+  skipped_count: number;
+  missing_company_count: number;
+  error_message: string | null;
+  started_at: string | null;
+  finished_at: string | null;
+  created_at: string;
+};

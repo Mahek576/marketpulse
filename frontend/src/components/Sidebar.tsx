@@ -6,13 +6,13 @@ import {
   Activity,
   Bell,
   Building2,
+  DatabaseZap,
   LayoutDashboard,
   Newspaper,
   Settings,
   Sparkles,
   Star,
 } from "lucide-react";
-
 const navItems = [
   {
     label: "Dashboard",
@@ -33,6 +33,11 @@ const navItems = [
     label: "Signals",
     href: "/signals",
     icon: Sparkles,
+  },
+  {
+  label: "Ingestion",
+  href: "/ingestion",
+  icon: DatabaseZap,
   },
   {
     label: "Alerts",
