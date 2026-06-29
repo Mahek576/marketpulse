@@ -1,5 +1,10 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
+from app.db.database import get_db
+from app.models.alert import Alert
+from app.models.company import Company
+from app.models.market_signal import MarketSignal
 from app.schemas.dashboard import (
     DashboardFeedItem,
     DashboardRiskSignal,
@@ -11,16 +16,20 @@ router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 
 @router.get("/summary", response_model=DashboardSummary)
-def get_dashboard_summary():
+def get_dashboard_summary(db: Session = Depends(get_db)):
+    tracked_companies = db.query(Company).count()
+    market_alerts = db.query(Alert).count()
+    news_signals = db.query(MarketSignal).count()
+
     return {
-        "tracked_companies": 24,
-        "market_alerts": 12,
-        "news_signals": 186,
+        "tracked_companies": tracked_companies,
+        "market_alerts": market_alerts,
+        "news_signals": news_signals,
         "avg_sentiment": "Bullish",
-        "tracked_companies_change": "+6 this week",
-        "market_alerts_change": "4 high priority",
-        "news_signals_change": "Last 24 hours",
-        "avg_sentiment_change": "+18% momentum",
+        "tracked_companies_change": "Database-backed count",
+        "market_alerts_change": "Active alert records",
+        "news_signals_change": "Generated signal records",
+        "avg_sentiment_change": "Sentiment aggregation coming soon",
     }
 
 
