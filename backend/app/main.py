@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from app.api.routes_dashboard import router as dashboard_router
 
 from fastapi import FastAPI, HTTPException
 from fastapi.exceptions import RequestValidationError
@@ -31,6 +32,10 @@ openapi_tags = [
         "name": "Health",
         "description": "Service and database health check endpoints.",
     },
+{
+    "name": "Dashboard",
+    "description": "Dashboard summary metrics for the MarketPulse frontend.",
+},
     {
         "name": "Auth",
         "description": "User registration, login, and current user profile endpoints.",
@@ -95,6 +100,7 @@ app.add_exception_handler(HTTPException, http_exception_handler)
 app.add_exception_handler(RequestValidationError, validation_exception_handler)
 
 app.include_router(health_router)
+app.include_router(dashboard_router)
 app.include_router(auth_router)
 app.include_router(companies_router)
 app.include_router(signals_router)
