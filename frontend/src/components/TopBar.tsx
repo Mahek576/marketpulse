@@ -1,4 +1,5 @@
 import { Bell, Search, ShieldCheck, UserCircle } from "lucide-react";
+import BackendStatus from "@/components/BackendStatus";
 
 export default function TopBar() {
   return (
@@ -20,6 +21,8 @@ export default function TopBar() {
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <BackendStatus />
+
         <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-400">
           <Search size={17} />
           <input
