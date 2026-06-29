@@ -1,9 +1,16 @@
 from fastapi import APIRouter
 
+from app.schemas.dashboard import (
+    DashboardFeedItem,
+    DashboardRiskSignal,
+    DashboardSummary,
+    DashboardWatchlistItem,
+)
+
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
 
 
-@router.get("/summary")
+@router.get("/summary", response_model=DashboardSummary)
 def get_dashboard_summary():
     return {
         "tracked_companies": 24,
@@ -15,7 +22,9 @@ def get_dashboard_summary():
         "news_signals_change": "Last 24 hours",
         "avg_sentiment_change": "+18% momentum",
     }
-@router.get("/watchlist")
+
+
+@router.get("/watchlist", response_model=list[DashboardWatchlistItem])
 def get_dashboard_watchlist():
     return [
         {
@@ -43,7 +52,9 @@ def get_dashboard_watchlist():
             "impact": "High",
         },
     ]
-@router.get("/feed")
+
+
+@router.get("/feed", response_model=list[DashboardFeedItem])
 def get_dashboard_feed():
     return [
         {
@@ -62,7 +73,9 @@ def get_dashboard_feed():
             "tag": "Neutral",
         },
     ]
-@router.get("/risk-radar")
+
+
+@router.get("/risk-radar", response_model=list[DashboardRiskSignal])
 def get_dashboard_risk_radar():
     return [
         {
