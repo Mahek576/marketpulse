@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.models.alert import Alert
+from app.models.article import Article
 from app.models.company import Company
 from app.models.market_signal import MarketSignal
 from app.schemas.dashboard import (
@@ -13,6 +14,21 @@ from app.schemas.dashboard import (
 )
 
 router = APIRouter(prefix="/dashboard", tags=["Dashboard"])
+
+
+def map_sentiment_to_feed_tag(sentiment_label: str | None) -> str:
+    if not sentiment_label:
+        return "Neutral"
+
+    normalized_sentiment = sentiment_label.lower().strip()
+
+    if normalized_sentiment in {"positive", "bullish", "opportunity"}:
+        return "Positive"
+
+    if normalized_sentiment in {"negative", "bearish", "risk", "caution"}:
+        return "Caution"
+
+    return "Neutral"
 
 
 @router.get("/summary", response_model=DashboardSummary)
@@ -64,23 +80,25 @@ def get_dashboard_watchlist():
 
 
 @router.get("/feed", response_model=list[DashboardFeedItem])
-def get_dashboard_feed():
+def get_dashboard_feed(db: Session = Depends(get_db)):
+    articles = (
+        db.query(Article)
+        .order_by(
+            Article.importance_score.desc(),
+            Article.published_at.desc(),
+            Article.created_at.desc(),
+        )
+        .limit(6)
+        .all()
+    )
+
     return [
         {
-            "title": "Reliance gains attention after energy expansion update",
-            "source": "MarketPulse Intelligence",
-            "tag": "Positive",
-        },
-        {
-            "title": "IT sector sentiment weakens amid global demand concerns",
-            "source": "AI News Monitor",
-            "tag": "Caution",
-        },
-        {
-            "title": "Banking stocks remain active as rate outlook stabilizes",
-            "source": "Financial Signals",
-            "tag": "Neutral",
-        },
+            "title": article.title,
+            "source": article.source,
+            "tag": map_sentiment_to_feed_tag(article.sentiment_label),
+        }
+        for article in articles
     ]
 
 
