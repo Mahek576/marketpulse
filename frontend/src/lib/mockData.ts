@@ -1,4 +1,9 @@
-import type { MetricCardData, NewsItem, WatchlistItem } from "./types";
+import type {
+  MetricCardData,
+  NewsItem,
+  RiskSignal,
+  WatchlistItem,
+} from "./types";
 
 export const marketCards: MetricCardData[] = [
   {
@@ -65,5 +70,22 @@ export const news: NewsItem[] = [
     title: "Banking stocks remain active as rate outlook stabilizes",
     source: "Financial Signals",
     tag: "Neutral",
+  },
+];
+export const riskSignals: RiskSignal[] = [
+  {
+    title: "High Volatility",
+    description: "IT sector showing negative sentiment acceleration.",
+    severity: "high",
+  },
+  {
+    title: "Earnings Watch",
+    description: "Banking names may react to upcoming quarterly updates.",
+    severity: "medium",
+  },
+  {
+    title: "Positive Momentum",
+    description: "Energy and infrastructure news flow remains strong.",
+    severity: "positive",
   },
 ];

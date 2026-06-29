@@ -1,7 +1,7 @@
 import DashboardIntelligenceFeed from "@/components/DashboardIntelligenceFeed";
 import DashboardMetrics from "@/components/DashboardMetrics";
+import DashboardRiskRadar from "@/components/DashboardRiskRadar";
 import DashboardWatchlist from "@/components/DashboardWatchlist";
-import RiskRadar from "@/components/RiskRadar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 
@@ -20,7 +20,7 @@ export default function Home() {
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
             <DashboardWatchlist />
-            <RiskRadar />
+            <DashboardRiskRadar />
           </section>
 
           <DashboardIntelligenceFeed />

@@ -26,3 +26,8 @@ export type DashboardSummary = {
   news_signals_change: string;
   avg_sentiment_change: string;
 };
+export type RiskSignal = {
+  title: string;
+  description: string;
+  severity: "high" | "medium" | "positive";
+};

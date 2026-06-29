@@ -62,3 +62,22 @@ def get_dashboard_feed():
             "tag": "Neutral",
         },
     ]
+@router.get("/risk-radar")
+def get_dashboard_risk_radar():
+    return [
+        {
+            "title": "High Volatility",
+            "description": "IT sector showing negative sentiment acceleration.",
+            "severity": "high",
+        },
+        {
+            "title": "Earnings Watch",
+            "description": "Banking names may react to upcoming quarterly updates.",
+            "severity": "medium",
+        },
+        {
+            "title": "Positive Momentum",
+            "description": "Energy and infrastructure news flow remains strong.",
+            "severity": "positive",
+        },
+    ]
