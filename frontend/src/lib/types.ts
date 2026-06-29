@@ -66,3 +66,15 @@ export type Company = {
   created_at: string;
   updated_at: string;
 };
+export type AlertItem = {
+  id: number;
+  user_id: number;
+  company_id: number | null;
+  signal_id: number;
+  alert_type: string;
+  severity: string;
+  title: string;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+};

@@ -30,9 +30,9 @@ const navItems = [
     icon: Newspaper,
   },
   {
-    label: "Alerts",
-    href: "/",
-    icon: Bell,
+  label: "Alerts",
+  href: "/alerts",
+  icon: Bell,
   },
   {
     label: "Companies",
