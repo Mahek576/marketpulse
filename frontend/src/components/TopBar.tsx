@@ -1,7 +1,36 @@
-import { Bell, Search, ShieldCheck, UserCircle } from "lucide-react";
+"use client";
+
+import { Bell, LogOut, Search, ShieldCheck, UserCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import BackendStatus from "@/components/BackendStatus";
+import { clearAuthToken, getCurrentUser } from "@/lib/auth";
+import type { UserProfile } from "@/lib/types";
 
 export default function TopBar() {
+  const router = useRouter();
+  const [user, setUser] = useState<UserProfile | null>(null);
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const currentUser = await getCurrentUser();
+        setUser(currentUser);
+      } catch {
+        setUser(null);
+      }
+    }
+
+    loadUser();
+  }, []);
+
+  function handleLogout() {
+    clearAuthToken();
+    router.push("/login");
+  }
+
+  const displayName = user?.full_name || user?.email || "Analyst";
+
   return (
     <div className="mb-6 flex flex-col gap-4 border-b border-white/10 pb-5 lg:flex-row lg:items-center lg:justify-between">
       <div>
@@ -41,12 +70,18 @@ export default function TopBar() {
           <Bell size={18} />
         </button>
 
+        <div className="flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-medium text-cyan-300">
+          <UserCircle size={18} />
+          <span className="max-w-32 truncate">{displayName}</span>
+        </div>
+
         <button
           suppressHydrationWarning
-          className="flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
+          onClick={handleLogout}
+          className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-rose-400/10 hover:text-rose-300"
         >
-          <UserCircle size={18} />
-          Analyst
+          <LogOut size={17} />
+          Logout
         </button>
       </div>
     </div>
