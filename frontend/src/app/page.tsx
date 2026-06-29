@@ -1,10 +1,10 @@
+import DashboardMetrics from "@/components/DashboardMetrics";
 import IntelligenceFeed from "@/components/IntelligenceFeed";
-import MetricCard from "@/components/MetricCard";
 import RiskRadar from "@/components/RiskRadar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import WatchlistTable from "@/components/WatchlistTable";
-import { marketCards, news, watchlist } from "@/lib/mockData";
+import { news, watchlist } from "@/lib/mockData";
 
 export default function Home() {
   return (
@@ -17,16 +17,7 @@ export default function Home() {
         <section className="flex-1 px-5 py-6 md:px-8 lg:px-10">
           <TopBar />
 
-          <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {marketCards.map((card) => (
-              <MetricCard
-                key={card.title}
-                title={card.title}
-                value={card.value}
-                change={card.change}
-              />
-            ))}
-          </section>
+          <DashboardMetrics />
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
             <WatchlistTable watchlist={watchlist} />

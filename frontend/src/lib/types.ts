@@ -16,3 +16,13 @@ export type NewsItem = {
   source: string;
   tag: "Positive" | "Caution" | "Neutral";
 };
+export type DashboardSummary = {
+  tracked_companies: number;
+  market_alerts: number;
+  news_signals: number;
+  avg_sentiment: string;
+  tracked_companies_change: string;
+  market_alerts_change: string;
+  news_signals_change: string;
+  avg_sentiment_change: string;
+};
