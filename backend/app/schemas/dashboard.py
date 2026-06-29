@@ -15,11 +15,11 @@ class DashboardSummary(BaseModel):
 
 
 class DashboardWatchlistItem(BaseModel):
+    company_id: int
     symbol: str
     name: str
     sentiment: Literal["Bullish", "Bearish", "Neutral"]
     impact: Literal["High", "Medium", "Low"]
-
 
 class DashboardFeedItem(BaseModel):
     title: str

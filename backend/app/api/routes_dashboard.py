@@ -99,6 +99,7 @@ def build_watchlist_item(company: Company, db: Session) -> dict:
     )
 
     return {
+        "company_id": company.id,
         "symbol": company.symbol,
         "name": company.name,
         "sentiment": map_signal_to_watchlist_sentiment(

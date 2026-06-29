@@ -5,12 +5,12 @@ export type MetricCardData = {
 };
 
 export type WatchlistItem = {
+  company_id?: number;
   symbol: string;
   name: string;
   sentiment: "Bullish" | "Bearish" | "Neutral";
   impact: "High" | "Medium" | "Low";
 };
-
 export type NewsItem = {
   title: string;
   source: string;
