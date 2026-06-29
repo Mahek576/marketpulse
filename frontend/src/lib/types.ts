@@ -54,3 +54,15 @@ export type UserProfile = {
   is_active: boolean;
   created_at: string;
 };
+export type Company = {
+  id: number;
+  symbol: string;
+  name: string;
+  exchange: string;
+  sector: string | null;
+  industry: string | null;
+  country: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+};
