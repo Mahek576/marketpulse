@@ -24,21 +24,29 @@ export default function RiskRadar({ signals }: RiskRadarProps) {
         Priority signals detected by MarketPulse.
       </p>
 
-      <div className="mt-6 space-y-4">
-        {signals.map((signal) => (
-          <div
-            key={signal.title}
-            className={`rounded-xl border p-4 ${getSignalStyle(
-              signal.severity
-            )}`}
-          >
-            <div className="text-sm font-semibold">{signal.title}</div>
-            <div className="mt-2 text-sm text-slate-300">
-              {signal.description}
+      {signals.length === 0 ? (
+        <div className="mt-6 rounded-xl border border-dashed border-white/10 bg-[#0b0f19] p-5 text-sm leading-6 text-slate-400">
+          No active market risk signals yet. Once MarketPulse generates signals
+          from articles, the highest-priority risks and opportunities will appear
+          here.
+        </div>
+      ) : (
+        <div className="mt-6 space-y-4">
+          {signals.map((signal) => (
+            <div
+              key={signal.title}
+              className={`rounded-xl border p-4 ${getSignalStyle(
+                signal.severity
+              )}`}
+            >
+              <div className="text-sm font-semibold">{signal.title}</div>
+              <div className="mt-2 text-sm text-slate-300">
+                {signal.description}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

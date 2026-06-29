@@ -31,6 +31,21 @@ def map_sentiment_to_feed_tag(sentiment_label: str | None) -> str:
     return "Neutral"
 
 
+def map_signal_severity_to_dashboard(severity: str | None) -> str:
+    if not severity:
+        return "medium"
+
+    normalized_severity = severity.lower().strip()
+
+    if normalized_severity in {"high", "critical", "severe", "risk"}:
+        return "high"
+
+    if normalized_severity in {"positive", "opportunity", "bullish"}:
+        return "positive"
+
+    return "medium"
+
+
 @router.get("/summary", response_model=DashboardSummary)
 def get_dashboard_summary(db: Session = Depends(get_db)):
     tracked_companies = db.query(Company).count()
@@ -103,21 +118,23 @@ def get_dashboard_feed(db: Session = Depends(get_db)):
 
 
 @router.get("/risk-radar", response_model=list[DashboardRiskSignal])
-def get_dashboard_risk_radar():
+def get_dashboard_risk_radar(db: Session = Depends(get_db)):
+    signals = (
+        db.query(MarketSignal)
+        .filter(MarketSignal.is_active.is_(True))
+        .order_by(
+            MarketSignal.score.desc(),
+            MarketSignal.created_at.desc(),
+        )
+        .limit(3)
+        .all()
+    )
+
     return [
         {
-            "title": "High Volatility",
-            "description": "IT sector showing negative sentiment acceleration.",
-            "severity": "high",
-        },
-        {
-            "title": "Earnings Watch",
-            "description": "Banking names may react to upcoming quarterly updates.",
-            "severity": "medium",
-        },
-        {
-            "title": "Positive Momentum",
-            "description": "Energy and infrastructure news flow remains strong.",
-            "severity": "positive",
-        },
+            "title": signal.title,
+            "description": signal.description or signal.why_it_matters,
+            "severity": map_signal_severity_to_dashboard(signal.severity),
+        }
+        for signal in signals
     ]
