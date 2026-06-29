@@ -15,3 +15,31 @@ def get_dashboard_summary():
         "news_signals_change": "Last 24 hours",
         "avg_sentiment_change": "+18% momentum",
     }
+@router.get("/watchlist")
+def get_dashboard_watchlist():
+    return [
+        {
+            "symbol": "RELIANCE",
+            "name": "Reliance Industries",
+            "sentiment": "Bullish",
+            "impact": "High",
+        },
+        {
+            "symbol": "TCS",
+            "name": "Tata Consultancy Services",
+            "sentiment": "Neutral",
+            "impact": "Medium",
+        },
+        {
+            "symbol": "INFY",
+            "name": "Infosys",
+            "sentiment": "Bearish",
+            "impact": "Medium",
+        },
+        {
+            "symbol": "HDFCBANK",
+            "name": "HDFC Bank",
+            "sentiment": "Bullish",
+            "impact": "High",
+        },
+    ]

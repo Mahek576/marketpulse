@@ -1,10 +1,10 @@
 import DashboardMetrics from "@/components/DashboardMetrics";
+import DashboardWatchlist from "@/components/DashboardWatchlist";
 import IntelligenceFeed from "@/components/IntelligenceFeed";
 import RiskRadar from "@/components/RiskRadar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
-import WatchlistTable from "@/components/WatchlistTable";
-import { news, watchlist } from "@/lib/mockData";
+import { news } from "@/lib/mockData";
 
 export default function Home() {
   return (
@@ -20,7 +20,7 @@ export default function Home() {
           <DashboardMetrics />
 
           <section className="mt-6 grid gap-6 xl:grid-cols-[1.3fr_0.7fr]">
-            <WatchlistTable watchlist={watchlist} />
+            <DashboardWatchlist />
             <RiskRadar />
           </section>
 
