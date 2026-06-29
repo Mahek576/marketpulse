@@ -8,13 +8,19 @@ import SignalsList from "@/components/SignalsList";
 import TopBar from "@/components/TopBar";
 import { apiRequest } from "@/lib/apiClient";
 import { getAuthToken } from "@/lib/auth";
-import type { MarketSignalItem } from "@/lib/types";
+import type { AlertItem, MarketSignalItem } from "@/lib/types";
 
 export default function SignalsPage() {
   const [signals, setSignals] = useState<MarketSignalItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "info">(
+    "info"
+  );
   const [showActiveOnly, setShowActiveOnly] = useState(true);
+  const [creatingAlertSignalId, setCreatingAlertSignalId] = useState<
+    number | null
+  >(null);
 
   useEffect(() => {
     async function loadSignals() {
@@ -34,6 +40,7 @@ export default function SignalsPage() {
         setSignals(data);
       } catch {
         setMessage("Unable to load market signals right now.");
+        setMessageType("error");
       } finally {
         setIsLoading(false);
       }
@@ -76,6 +83,48 @@ export default function SignalsPage() {
     return Math.round(total / signals.length);
   }, [signals]);
 
+  async function handleCreateAlert(signalId: number) {
+    const token = getAuthToken();
+
+    if (!token) {
+      setMessage("Please log in again to create alerts.");
+      setMessageType("error");
+      return;
+    }
+
+    setCreatingAlertSignalId(signalId);
+    setMessage("");
+
+    try {
+      await apiRequest<AlertItem>(`/alerts/from-signal/${signalId}`, {
+        method: "POST",
+        token,
+      });
+
+      setMessage("Alert created successfully.");
+      setMessageType("success");
+    } catch {
+      setMessage(
+        "Could not create alert. The company may not be in your watchlist, or the alert may already exist."
+      );
+      setMessageType("error");
+    } finally {
+      setCreatingAlertSignalId(null);
+    }
+  }
+
+  function getMessageClass() {
+    if (messageType === "success") {
+      return "border-emerald-400/20 bg-emerald-400/10 text-emerald-200";
+    }
+
+    if (messageType === "error") {
+      return "border-rose-400/20 bg-rose-400/10 text-rose-200";
+    }
+
+    return "border-cyan-400/20 bg-cyan-400/10 text-cyan-200";
+  }
+
   return (
     <AuthGuard>
       <main className="min-h-screen bg-[#070a12] text-white">
@@ -113,10 +162,10 @@ export default function SignalsPage() {
                 </button>
 
                 <Link
-                  href="/"
+                  href="/alerts"
                   className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
                 >
-                  Back to Dashboard
+                  View Alerts
                 </Link>
               </div>
             </div>
@@ -146,7 +195,9 @@ export default function SignalsPage() {
             </section>
 
             {message ? (
-              <div className="mb-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+              <div
+                className={`mb-5 rounded-2xl border px-4 py-3 text-sm ${getMessageClass()}`}
+              >
                 {message}
               </div>
             ) : null}
@@ -156,7 +207,11 @@ export default function SignalsPage() {
                 Loading market signals...
               </div>
             ) : (
-              <SignalsList signals={filteredSignals} />
+              <SignalsList
+                signals={filteredSignals}
+                onCreateAlert={handleCreateAlert}
+                creatingAlertSignalId={creatingAlertSignalId}
+              />
             )}
           </section>
         </div>

@@ -2,6 +2,8 @@ import type { MarketSignalItem } from "@/lib/types";
 
 type SignalCardProps = {
   signal: MarketSignalItem;
+  onCreateAlert?: (signalId: number) => void;
+  creatingAlertSignalId?: number | null;
 };
 
 function getSeverityStyle(severity: string) {
@@ -26,7 +28,11 @@ function getSeverityStyle(severity: string) {
   return "border-amber-400/20 bg-amber-400/10 text-amber-300";
 }
 
-export default function SignalCard({ signal }: SignalCardProps) {
+export default function SignalCard({
+  signal,
+  onCreateAlert,
+  creatingAlertSignalId,
+}: SignalCardProps) {
   return (
     <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition hover:border-cyan-400/20 hover:bg-white/[0.05]">
       <div className="mb-4 flex flex-wrap items-center gap-2">
@@ -81,9 +87,28 @@ export default function SignalCard({ signal }: SignalCardProps) {
         </div>
       </div>
 
-      <div className="mt-5 border-t border-white/10 pt-4 text-xs text-slate-500">
-        Type: {signal.signal_type} · Created:{" "}
-        {new Date(signal.created_at).toLocaleString()}
+      <div className="mt-5 flex flex-col justify-between gap-3 border-t border-white/10 pt-4 text-xs text-slate-500 md:flex-row md:items-center">
+        <div>
+          Type: {signal.signal_type} · Created:{" "}
+          {new Date(signal.created_at).toLocaleString()}
+        </div>
+
+        {onCreateAlert ? (
+          <button
+            suppressHydrationWarning
+            onClick={() => onCreateAlert(signal.id)}
+            disabled={
+              creatingAlertSignalId === signal.id ||
+              !signal.is_active ||
+              signal.company_id === null
+            }
+            className="w-fit rounded-xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-xs font-medium text-cyan-300 transition hover:bg-cyan-400/15 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {creatingAlertSignalId === signal.id
+              ? "Creating alert..."
+              : "Create Alert"}
+          </button>
+        ) : null}
       </div>
     </article>
   );
