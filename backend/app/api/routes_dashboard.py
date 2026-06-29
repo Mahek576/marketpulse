@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
+from app.api.dependencies import get_current_user
 from app.db.database import get_db
 from app.models.alert import Alert
 from app.models.article import Article
 from app.models.company import Company
 from app.models.market_signal import MarketSignal
+from app.models.user import User
 from app.models.watchlist import Watchlist
 from app.schemas.dashboard import (
     DashboardFeedItem,
@@ -56,7 +58,14 @@ def map_signal_to_watchlist_sentiment(severity: str | None) -> str:
     if normalized_severity in {"positive", "opportunity", "bullish"}:
         return "Bullish"
 
-    if normalized_severity in {"high", "critical", "severe", "risk", "negative", "bearish"}:
+    if normalized_severity in {
+        "high",
+        "critical",
+        "severe",
+        "risk",
+        "negative",
+        "bearish",
+    }:
         return "Bearish"
 
     return "Neutral"
@@ -120,37 +129,23 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
 
 
 @router.get("/watchlist", response_model=list[DashboardWatchlistItem])
-def get_dashboard_watchlist(db: Session = Depends(get_db)):
+def get_dashboard_watchlist(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
     watchlist_rows = (
-        db.query(Watchlist, Company)
-        .join(Company, Watchlist.company_id == Company.id)
-        .filter(Company.is_active.is_(True))
+        db.query(Company)
+        .join(Watchlist, Watchlist.company_id == Company.id)
+        .filter(
+            Watchlist.user_id == current_user.id,
+            Company.is_active.is_(True),
+        )
         .order_by(Watchlist.created_at.desc())
-        .limit(20)
+        .limit(10)
         .all()
     )
 
-    companies = []
-    seen_company_ids = set()
-
-    for _, company in watchlist_rows:
-        if company.id not in seen_company_ids:
-            companies.append(company)
-            seen_company_ids.add(company.id)
-
-        if len(companies) == 4:
-            break
-
-    if not companies:
-        companies = (
-            db.query(Company)
-            .filter(Company.is_active.is_(True))
-            .order_by(Company.created_at.desc())
-            .limit(4)
-            .all()
-        )
-
-    return [build_watchlist_item(company, db) for company in companies]
+    return [build_watchlist_item(company, db) for company in watchlist_rows]
 
 
 @router.get("/feed", response_model=list[DashboardFeedItem])
