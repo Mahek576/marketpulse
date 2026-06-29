@@ -8,7 +8,7 @@ import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
 import { apiRequest } from "@/lib/apiClient";
 import { getAuthToken } from "@/lib/auth";
-import type { ArticleItem, MarketSignalItem, PersonalizedFeed } from "@/lib/types";
+import type { ArticleItem, MarketSignalItem } from "@/lib/types";
 
 export default function NewsPage() {
   const [articles, setArticles] = useState<ArticleItem[]>([]);
@@ -39,31 +39,33 @@ export default function NewsPage() {
     return Math.round(total / articles.length);
   }, [articles]);
 
-  useEffect(() => {
-    async function loadNews() {
-      const token = getAuthToken();
+  async function loadArticles() {
+    const token = getAuthToken();
 
-      if (!token) {
-        setArticles([]);
-        setIsLoading(false);
-        return;
-      }
-
-      try {
-        const feed = await apiRequest<PersonalizedFeed>("/feed?limit=20", {
-          token,
-        });
-
-        setArticles(feed.latest_articles);
-      } catch {
-        setMessage("Unable to load news intelligence right now.");
-        setMessageType("error");
-      } finally {
-        setIsLoading(false);
-      }
+    if (!token) {
+      setArticles([]);
+      setIsLoading(false);
+      return;
     }
 
-    loadNews();
+    setIsLoading(true);
+
+    try {
+      const data = await apiRequest<ArticleItem[]>("/articles?limit=50", {
+        token,
+      });
+
+      setArticles(data);
+    } catch {
+      setMessage("Unable to load articles right now.");
+      setMessageType("error");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadArticles();
   }, []);
 
   async function handleCreateSignal(articleId: number) {
@@ -89,6 +91,8 @@ export default function NewsPage() {
 
       setMessage(`Signal created successfully. Signal ID: ${signal.id}`);
       setMessageType("success");
+
+      await loadArticles();
     } catch {
       setMessage(
         "Could not create signal. A signal may already exist for this article."
@@ -133,8 +137,8 @@ export default function NewsPage() {
                 </h1>
 
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">
-                  Review market-moving articles, sentiment labels, source
-                  attribution, and article importance scores.
+                  Review all market articles, generate signals, and move
+                  important intelligence into the alert workflow.
                 </p>
               </div>
 
