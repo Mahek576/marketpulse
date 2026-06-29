@@ -6,6 +6,7 @@ from app.models.alert import Alert
 from app.models.article import Article
 from app.models.company import Company
 from app.models.market_signal import MarketSignal
+from app.models.watchlist import Watchlist
 from app.schemas.dashboard import (
     DashboardFeedItem,
     DashboardRiskSignal,
@@ -46,6 +47,60 @@ def map_signal_severity_to_dashboard(severity: str | None) -> str:
     return "medium"
 
 
+def map_signal_to_watchlist_sentiment(severity: str | None) -> str:
+    if not severity:
+        return "Neutral"
+
+    normalized_severity = severity.lower().strip()
+
+    if normalized_severity in {"positive", "opportunity", "bullish"}:
+        return "Bullish"
+
+    if normalized_severity in {"high", "critical", "severe", "risk", "negative", "bearish"}:
+        return "Bearish"
+
+    return "Neutral"
+
+
+def map_signal_score_to_impact(score: int | None) -> str:
+    if score is None:
+        return "Medium"
+
+    if score >= 75:
+        return "High"
+
+    if score >= 40:
+        return "Medium"
+
+    return "Low"
+
+
+def build_watchlist_item(company: Company, db: Session) -> dict:
+    latest_signal = (
+        db.query(MarketSignal)
+        .filter(
+            MarketSignal.company_id == company.id,
+            MarketSignal.is_active.is_(True),
+        )
+        .order_by(
+            MarketSignal.score.desc(),
+            MarketSignal.created_at.desc(),
+        )
+        .first()
+    )
+
+    return {
+        "symbol": company.symbol,
+        "name": company.name,
+        "sentiment": map_signal_to_watchlist_sentiment(
+            latest_signal.severity if latest_signal else None
+        ),
+        "impact": map_signal_score_to_impact(
+            latest_signal.score if latest_signal else None
+        ),
+    }
+
+
 @router.get("/summary", response_model=DashboardSummary)
 def get_dashboard_summary(db: Session = Depends(get_db)):
     tracked_companies = db.query(Company).count()
@@ -65,33 +120,37 @@ def get_dashboard_summary(db: Session = Depends(get_db)):
 
 
 @router.get("/watchlist", response_model=list[DashboardWatchlistItem])
-def get_dashboard_watchlist():
-    return [
-        {
-            "symbol": "RELIANCE",
-            "name": "Reliance Industries",
-            "sentiment": "Bullish",
-            "impact": "High",
-        },
-        {
-            "symbol": "TCS",
-            "name": "Tata Consultancy Services",
-            "sentiment": "Neutral",
-            "impact": "Medium",
-        },
-        {
-            "symbol": "INFY",
-            "name": "Infosys",
-            "sentiment": "Bearish",
-            "impact": "Medium",
-        },
-        {
-            "symbol": "HDFCBANK",
-            "name": "HDFC Bank",
-            "sentiment": "Bullish",
-            "impact": "High",
-        },
-    ]
+def get_dashboard_watchlist(db: Session = Depends(get_db)):
+    watchlist_rows = (
+        db.query(Watchlist, Company)
+        .join(Company, Watchlist.company_id == Company.id)
+        .filter(Company.is_active.is_(True))
+        .order_by(Watchlist.created_at.desc())
+        .limit(20)
+        .all()
+    )
+
+    companies = []
+    seen_company_ids = set()
+
+    for _, company in watchlist_rows:
+        if company.id not in seen_company_ids:
+            companies.append(company)
+            seen_company_ids.add(company.id)
+
+        if len(companies) == 4:
+            break
+
+    if not companies:
+        companies = (
+            db.query(Company)
+            .filter(Company.is_active.is_(True))
+            .order_by(Company.created_at.desc())
+            .limit(4)
+            .all()
+        )
+
+    return [build_watchlist_item(company, db) for company in companies]
 
 
 @router.get("/feed", response_model=list[DashboardFeedItem])

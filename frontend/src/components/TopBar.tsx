@@ -26,16 +26,25 @@ export default function TopBar() {
         <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-slate-400">
           <Search size={17} />
           <input
+            suppressHydrationWarning
+            autoComplete="off"
             className="w-56 bg-transparent outline-none placeholder:text-slate-500"
             placeholder="Search company or news..."
           />
         </div>
 
-        <button className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-slate-300 transition hover:bg-white/[0.08] hover:text-white">
+        <button
+          suppressHydrationWarning
+          aria-label="Notifications"
+          className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+        >
           <Bell size={18} />
         </button>
 
-        <button className="flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15">
+        <button
+          suppressHydrationWarning
+          className="flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-4 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
+        >
           <UserCircle size={18} />
           Analyst
         </button>

@@ -26,28 +26,35 @@ export default function WatchlistTable({ watchlist }: WatchlistTableProps) {
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-white/10">
-        <div className="grid grid-cols-4 bg-white/[0.04] px-4 py-3 text-xs font-medium uppercase tracking-wide text-slate-400">
-          <div>Symbol</div>
-          <div>Company</div>
-          <div>Sentiment</div>
-          <div>Impact</div>
+      {watchlist.length === 0 ? (
+        <div className="rounded-xl border border-dashed border-white/10 bg-[#0b0f19] p-6 text-sm leading-6 text-slate-400">
+          No companies available yet. Once companies are added or users start
+          building watchlists, MarketPulse will show tracked companies here.
         </div>
-
-        {watchlist.map((item) => (
-          <div
-            key={item.symbol}
-            className="grid grid-cols-4 border-t border-white/10 px-4 py-4 text-sm"
-          >
-            <div className="font-semibold text-white">{item.symbol}</div>
-            <div className="text-slate-300">{item.name}</div>
-            <div className={getSentimentColor(item.sentiment)}>
-              {item.sentiment}
-            </div>
-            <div className="text-cyan-300">{item.impact}</div>
+      ) : (
+        <div className="overflow-hidden rounded-xl border border-white/10">
+          <div className="grid grid-cols-4 bg-white/[0.04] px-4 py-3 text-xs font-medium uppercase tracking-wide text-slate-400">
+            <div>Symbol</div>
+            <div>Company</div>
+            <div>Sentiment</div>
+            <div>Impact</div>
           </div>
-        ))}
-      </div>
+
+          {watchlist.map((item) => (
+            <div
+              key={item.symbol}
+              className="grid grid-cols-4 border-t border-white/10 px-4 py-4 text-sm"
+            >
+              <div className="font-semibold text-white">{item.symbol}</div>
+              <div className="text-slate-300">{item.name}</div>
+              <div className={getSentimentColor(item.sentiment)}>
+                {item.sentiment}
+              </div>
+              <div className="text-cyan-300">{item.impact}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
