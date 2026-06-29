@@ -86,12 +86,21 @@ export default function NewsPage() {
                 </p>
               </div>
 
-              <Link
-                href="/"
-                className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
-              >
-                Back to Dashboard
-              </Link>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Link
+                  href="/articles/new"
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/[0.08] hover:text-white"
+                >
+                  Add Article
+                </Link>
+
+                <Link
+                  href="/"
+                  className="rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/15"
+                >
+                  Back to Dashboard
+                </Link>
+              </div>
             </div>
 
             <section className="mb-6 grid gap-4 md:grid-cols-3">

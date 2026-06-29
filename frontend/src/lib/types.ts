@@ -120,3 +120,15 @@ export type MarketSignalItem = {
   is_active: boolean;
   created_at: string;
 };
+export type ArticleCreateRequest = {
+  company_id: number | null;
+  title: string;
+  url: string;
+  source: string;
+  author?: string | null;
+  published_at?: string | null;
+  summary?: string | null;
+  content?: string | null;
+  sentiment_label?: string | null;
+  importance_score: number;
+};
